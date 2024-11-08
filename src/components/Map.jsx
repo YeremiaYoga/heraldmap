@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const Map = () => {
   const [zoomLevel, setZoomLevel] = useState(1.5);
-  
+
   const zoomIn = () => {
     if (zoomLevel < 5) {
       setZoomLevel(zoomLevel + 0.5);
@@ -14,8 +14,24 @@ const Map = () => {
       setZoomLevel(zoomLevel - 0.5);
     }
   };
+
+  const handleWheel = (e) => {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      if (zoomLevel < 5) {
+        setZoomLevel(zoomLevel + 0.1);
+      }
+    } else {
+      if (zoomLevel > 1) {
+        setZoomLevel(zoomLevel - 0.1);
+      }
+    }
+  };
   return (
-    <div className="relative flex justify-center items-center">
+    <div
+      className="relative flex justify-center items-center"
+      onWheel={handleWheel}
+    >
       <img
         id="mapId"
         src="/assets/map.png"
@@ -27,7 +43,7 @@ const Map = () => {
           transition: "transform 0.3s ease-in-out",
         }}
       />
-      
+
       <div className="absolute bottom-4 right-4 flex flex-col items-center space-y-2">
         <button
           onClick={zoomIn}
